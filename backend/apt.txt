@@ -1,6 +1,7 @@
-libzbar0       # required for pyzbar (ZBar barcode reader)
-libgl1         # needed for OpenCV to handle image/video I/O
-libglib2.0-0   # required by OpenCV on some systems
-libsm6         # optional but fixes some OpenCV GUI-related errors
-libxext6       # optional, OpenCV dependency
-libxrender1    # optional, OpenCV dependency
+libzbar0           # For pyzbar
+libgl1             # For OpenCV
+libglib2.0-0       # OpenCV dependency
+libsm6             # Optional OpenCV GUI support
+libxext6           # Optional OpenCV GUI support
+libxrender1        # Optional OpenCV GUI support
+tesseract-ocr      # For pytesseract OCR
