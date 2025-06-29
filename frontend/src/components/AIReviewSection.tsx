@@ -34,7 +34,7 @@ const reviews: Array<{
     trustScore: 62,
     title: "Not what I expected",
     date: "2024-04-20",
-    text: "The product I received looks different from the images. Also, the logo seems off. I haven't bought this exact model before.",
+    text: "The product I received looks different from the images. Also, the logo seems off. I haven&apos;t bought this exact model before.",
     images: [
       "https://m.media-amazon.com/images/I/71QKQ9mwV7L._AC_SX679_.jpg"
     ],
@@ -58,7 +58,7 @@ const reviews: Array<{
     trustScore: 28,
     title: "Best Gucci ever!",
     date: "2024-04-10",
-    text: "This Guchi bag is amazing. Looks just like the real thing. First copy but you can't tell the difference.",
+    text: "This Guchi bag is amazing. Looks just like the real thing. First copy but you can&apos;t tell the difference.",
     images: [
       "https://m.media-amazon.com/images/I/81Zt42ioCgL._AC_SX679_.jpg"
     ],

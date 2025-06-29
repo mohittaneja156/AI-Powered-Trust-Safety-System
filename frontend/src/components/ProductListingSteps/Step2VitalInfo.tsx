@@ -69,7 +69,7 @@ const Step2VitalInfo: React.FC<VitalInfoProps> = ({ productData, onInputChange }
             placeholder="Enter part number (if applicable)"
           />
           <p className="text-xs text-gray-500 mt-1">
-            The manufacturer's part number for this specific product
+            The manufacturer&apos;s part number for this specific product
           </p>
         </div>
 

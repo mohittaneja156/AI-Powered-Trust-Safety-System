@@ -21,6 +21,7 @@ import {
 } from 'react-icons/fa';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import ReactMarkdown from 'react-markdown';
+import Image from 'next/image';
 
 // Simple Donut Chart component since FlagSeverityDonutChart is not available
 const FlagSeverityDonutChart = ({ data }: { data: Record<string, number> }) => {
@@ -486,10 +487,11 @@ const AdminDashboard = () => {
                             </div>
                             {item.image && (
                               <div className="relative w-full flex flex-col items-center">
-                                <img 
+                                <Image 
                                   src={item.image} 
                                   alt="Evidence" 
                                   className="rounded-lg max-w-full max-h-32 object-contain border" 
+                                  width={120} height={64}
                                   onError={e => (e.currentTarget.style.display = 'none')} 
                                 />
                                 {/* Image label if flagged */}
@@ -547,7 +549,13 @@ const AdminDashboard = () => {
                             }
                             return (
                               <div key={idx} className="relative flex flex-col items-center">
-                                <img src={img} alt={`Product ${idx + 1}`} className="rounded-lg max-h-24 object-contain border" onError={e => (e.currentTarget.style.display = 'none')} />
+                                <Image 
+                                  src={img} 
+                                  alt={`Product ${idx + 1}`} 
+                                  className="rounded-lg max-h-24 object-contain border" 
+                                  width={120} height={96}
+                                  onError={e => (e.currentTarget.style.display = 'none')} 
+                                />
                                 {label && <span className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-red-500 text-white text-xs px-2 py-0.5 rounded shadow border border-white">{label}</span>}
                               </div>
                             );
@@ -684,10 +692,11 @@ const AdminDashboard = () => {
                             </div>
                             {item.image && (
                               <div className="relative w-full flex flex-col items-center">
-                                <img 
+                                <Image 
                                   src={item.image} 
                                   alt="Evidence" 
                                   className="rounded-lg max-w-full max-h-32 object-contain border" 
+                                  width={120} height={64}
                                   onError={e => (e.currentTarget.style.display = 'none')} 
                                 />
                                 {/* Image label if flagged */}
@@ -745,7 +754,13 @@ const AdminDashboard = () => {
                             }
                             return (
                               <div key={idx} className="relative flex flex-col items-center">
-                                <img src={img} alt={`Product ${idx + 1}`} className="rounded-lg max-h-24 object-contain border" onError={e => (e.currentTarget.style.display = 'none')} />
+                                <Image 
+                                  src={img} 
+                                  alt={`Product ${idx + 1}`} 
+                                  className="rounded-lg max-h-24 object-contain border" 
+                                  width={120} height={96}
+                                  onError={e => (e.currentTarget.style.display = 'none')} 
+                                />
                                 {label && <span className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-red-500 text-white text-xs px-2 py-0.5 rounded shadow border border-white">{label}</span>}
                               </div>
                             );

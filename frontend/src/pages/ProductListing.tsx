@@ -8,6 +8,7 @@ import Step4ProductDetails from '@/components/ProductListingSteps/Step4ProductDe
 import Step5Variations from '@/components/ProductListingSteps/Step5Variations';
 import Step6Images from '@/components/ProductListingSteps/Step6Images';
 import Step7Shipping from '@/components/ProductListingSteps/Step7Shipping';
+import Image from 'next/image';
 
 // Define types for the product listing flow
 interface ProductListingData {
@@ -768,7 +769,7 @@ const ProductListing = () => {
                     onClick={() => handleProductSelect(product)}
                   >
                     <div className="flex gap-4">
-                      <img src={product.image} alt={product.title} className="w-20 h-20 object-cover rounded" />
+                      <Image src={product.image} alt={product.title} className="w-20 h-20 object-cover rounded" width={80} height={80} />
                       <div className="flex-1">
                         <h3 className="font-semibold">{product.title}</h3>
                         <p className="text-sm text-gray-600">Brand: {product.brand}</p>

@@ -263,7 +263,7 @@ export default function ProductReviews({ reviews, productTrustScore = 92, produc
           {review.images?.[0] && (
             <div className="ml-4 flex-shrink-0">
               <div className="relative group">
-                <img 
+                <Image 
                   src={review.images[0]} 
                   alt="Review" 
                   className={`w-16 h-16 object-cover rounded-md transition-all duration-200 hover:scale-105 ${
@@ -273,6 +273,7 @@ export default function ProductReviews({ reviews, productTrustScore = 92, produc
                         ? 'ring-1 ring-yellow-300'
                         : 'ring-1 ring-red-300'
                   }`}
+                  width={64} height={64}
                 />
                 {review.imageScore === 100 && (
                   <div className="absolute -top-1 -right-1 bg-green-500 rounded-full p-0.5">

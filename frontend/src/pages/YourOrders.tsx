@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useRef, useCallback } from 'react';
+import Image from 'next/image';
 
 const mockOrders = [
   {
@@ -294,7 +295,7 @@ const YourOrders = () => {
               </div>
               <div className="flex flex-col md:flex-row flex-wrap gap-2 md:gap-4 items-center">
                 <div className="flex flex-col items-center">
-                  <img src={order.product.image} alt="Product" className="w-16 h-16 md:w-20 md:h-20 rounded-lg border border-gray-200 object-cover" />
+                  <Image src={order.product.image} alt="Product" className="w-16 h-16 md:w-20 md:h-20 rounded-lg border border-gray-200 object-cover" width={80} height={80} />
                 </div>
                 <div className="flex-1 min-w-[120px] md:min-w-[160px]">
                   <div className="text-xs md:text-sm font-semibold text-accent mb-1">Delivered {order.delivered}</div>
@@ -323,7 +324,7 @@ const YourOrders = () => {
             <div className="font-semibold mb-2 text-text_primary">Buy it again</div>
             {buyAgain.map((item, idx) => (
               <div key={idx} className="flex gap-2 items-center mb-3">
-                <img src="https://m.media-amazon.com/images/I/612etDiWsJL.jpg" alt="Buy Again" className="w-10 h-10 md:w-12 md:h-12 rounded-lg border border-gray-200 object-cover" />
+                <Image src="https://m.media-amazon.com/images/I/612etDiWsJL.jpg" alt="Buy Again" className="w-10 h-10 md:w-12 md:h-12 rounded-lg border border-gray-200 object-cover" width={48} height={48} />
                 <div className="flex-1">
                   <div className="text-xs font-semibold text-text_primary mb-1">{item.title}</div>
                   <div className="text-xs text-text_secondary mb-1">{item.price}</div>
@@ -384,7 +385,7 @@ const YourOrders = () => {
               </div>
             ) : (
               <div className="w-full flex flex-col items-center">
-                <img src={capturedImage} alt="Captured" className="rounded-lg border border-gray-200 w-full max-w-xs h-48 object-cover mb-2" />
+                <Image src={capturedImage} alt="Captured" className="rounded-lg border border-gray-200 w-full max-w-xs h-48 object-cover mb-2" width={300} height={200} />
                 {scanning && <div className="text-primary font-semibold mt-2">Verifying...</div>}
                 {scanResult && !scanning && (
                   <div className="w-full">

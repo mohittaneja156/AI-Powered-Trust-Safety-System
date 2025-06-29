@@ -81,7 +81,7 @@ const Header = () => {
                 <div className="flex items-center gap-2 ml-2">
                     {userInfo ? (
                         <div className="flex items-center px-2 border border-transparent hover:border-primary cursor-pointer duration-300 h-[70%] gap-1">
-                            <img src={userInfo.image} alt="userImage" className="w-8 h-8 rounded-full object-cover"/>
+                            <Image src={userInfo.image} alt="userImage" className="w-8 h-8 rounded-full object-cover" width={32} height={32}/>
                             <div className="text-xs text-text_secondary flex flex-col justify-between">
                                 <p className="text-text_primary font-bold">{userInfo.name}</p>
                                 <p>{userInfo.email}</p>

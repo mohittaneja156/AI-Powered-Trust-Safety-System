@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, useEffect } from 'react';
 import { FaSearch, FaGlobe, FaEnvelope, FaQuestionCircle, FaTimesCircle, FaCheckCircle, FaExclamationTriangle, FaShieldAlt } from 'react-icons/fa';
 import { FiMenu } from 'react-icons/fi';
+import Image from 'next/image';
 
 // Define a type for the AI prediction result from your FastAPI
 interface AIResult {
@@ -75,7 +76,7 @@ interface Product {
   asin: string;
   image: string;
   // This 'ai' property will now be derived from 'modalAIResult' in the modal
-  // We'll keep it here for existing products that don't go through the AI check
+  // We&apos;ll keep it here for existing products that don&apos;t go through the AI check
   // but it will be overridden for newly checked products
   ai?: {
     visual: { type: string; status: string; message: string; }[];
@@ -176,7 +177,7 @@ const ProductInfoModal = ({ open, onClose, product, aiResult, listedProduct }: {
             <button className="bg-primary text-white px-4 py-2 rounded flex items-center justify-center"><FaSearch /></button>
           </div>
           <div className="flex items-center gap-4 mb-4">
-            <img src={displayProduct.image} alt="product" className="w-20 h-20 object-contain rounded border" />
+            <Image src={displayProduct.image} alt="product" className="w-20 h-20 object-contain rounded border" width={80} height={80} />
             <div>
               <a href="#" className="text-primary font-semibold hover:underline text-base">{displayProduct.title}</a>
               <div className="text-xs text-text_secondary mt-1"><b>Product ID:</b> {displayProduct.asin}</div>
@@ -590,7 +591,7 @@ const ProductIdentity = () => {
                     <input type="file" id="productImage" accept="image/*" className="w-full border border-gray-300 rounded px-4 py-2 text-base focus:border-primary focus:outline-none" onChange={handleImageChange} />
                     {productImagePreview && (
                       <div className="mt-2">
-                        <img src={productImagePreview} alt="Image Preview" className="max-w-full max-h-48 object-contain border rounded" />
+                        <Image src={productImagePreview} alt="Image Preview" className="max-w-full max-h-48 object-contain border rounded" width={300} height={200} />
                       </div>
                     )}
                   </div>
@@ -671,7 +672,7 @@ const ProductIdentity = () => {
                   searchResults.map((product, idx) => (
                     <div key={idx} className="py-4 md:py-6 flex flex-col gap-2">
                       <div className="flex flex-col md:flex-row md:items-start md:gap-4">
-                        <img src={product.listing_data.mainImage || 'https://via.placeholder.com/150'} alt={product.listing_data.productTitle} className="w-24 h-24 object-contain rounded border self-center md:self-start" />
+                        <Image src={product.listing_data.mainImage || 'https://via.placeholder.com/150'} alt={product.listing_data.productTitle} className="w-24 h-24 object-contain rounded border self-center md:self-start" width={96} height={96} />
                         <div className="flex-1 mt-2 md:mt-0">
                           <a href="#" className="text-primary font-semibold hover:underline text-base">{product.listing_data.productTitle}</a>
                           <div className="text-xs text-text_secondary mt-1">Brand: {product.listing_data.brandName}</div>

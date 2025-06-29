@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaTimes, FaUserShield, FaCheckCircle, FaExclamationTriangle, FaUser, FaBoxOpen, FaClipboardList, FaRobot, FaImage, FaInfoCircle, FaUserCircle, FaTag, FaCalendarAlt, FaMapMarkerAlt, FaEnvelope, FaPhone, FaStar, FaFileAlt } from 'react-icons/fa';
+import Image from 'next/image';
 
 interface EvidenceItem {
   type: string;
@@ -86,7 +87,7 @@ const FlagReportDrawer: React.FC<FlagReportDrawerProps> = ({ open, onClose, flag
               {flag.product.images && flag.product.images.length > 0 && (
                 <div className="flex gap-2">
                   {flag.product.images.map((img, idx) => (
-                    <img key={idx} src={img} alt="Product" className="w-20 h-20 object-contain rounded border" onError={e => (e.currentTarget.style.display = 'none')} />
+                    <Image key={idx} src={img} alt="Product" className="w-20 h-20 object-contain rounded border" width={80} height={80} onError={e => (e.currentTarget.style.display = 'none')} />
                   ))}
                 </div>
               )}
@@ -154,7 +155,7 @@ const FlagReportDrawer: React.FC<FlagReportDrawerProps> = ({ open, onClose, flag
                 {item.type === 'AI' && <FaRobot className="text-cyan-400" />}
                 <span className="font-medium">{item.type}:</span> {item.detail}
                 {item.image && (
-                  <img src={item.image} alt="Evidence" className="ml-2 rounded-lg max-w-[80px] max-h-16 object-contain border" onError={e => (e.currentTarget.style.display = 'none')} />
+                  <Image src={item.image} alt="Evidence" className="ml-2 rounded-lg max-w-[80px] max-h-16 object-contain border" width={80} height={64} onError={e => (e.currentTarget.style.display = 'none')} />
                 )}
               </div>
             ))}
@@ -169,7 +170,7 @@ const FlagReportDrawer: React.FC<FlagReportDrawerProps> = ({ open, onClose, flag
           <ul className="flex flex-wrap gap-3">
             {flag.evidence.filter(e => e.image).map((item, idx) => (
               <li key={idx} className="">
-                <img src={item.image} alt="Evidence" className="rounded-lg max-w-[120px] max-h-24 object-contain border" onError={e => (e.currentTarget.style.display = 'none')} />
+                <Image src={item.image} alt="Evidence" className="rounded-lg max-w-[120px] max-h-24 object-contain border" width={120} height={96} onError={e => (e.currentTarget.style.display = 'none')} />
                 <div className="text-xs text-gray-500 mt-1">{item.type}</div>
               </li>
             ))}

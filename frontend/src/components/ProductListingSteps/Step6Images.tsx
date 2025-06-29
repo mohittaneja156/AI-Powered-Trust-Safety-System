@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import Image from 'next/image';
 
 interface ImagesProps {
   productData: {
@@ -145,10 +146,12 @@ const Step6Images: React.FC<ImagesProps> = ({ productData, onInputChange }) => {
             
             {productData.mainImage ? (
               <div className="relative">
-                <img 
+                <Image 
                   src={productData.mainImage} 
                   alt="Main product" 
                   className="w-64 h-64 object-cover border border-gray-300 rounded-lg"
+                  width={256}
+                  height={256}
                 />
                 <button
                   onClick={() => removeImage('main')}
@@ -195,10 +198,12 @@ const Step6Images: React.FC<ImagesProps> = ({ productData, onInputChange }) => {
               {/* Existing additional images */}
               {productData.additionalImages.map((image, index) => (
                 <div key={index} className="relative">
-                  <img 
+                  <Image 
                     src={image} 
                     alt={`Additional ${index + 1}`} 
                     className="w-full h-32 object-cover border border-gray-300 rounded-lg"
+                    width={128}
+                    height={128}
                   />
                   <button
                     onClick={() => removeImage('additional', index)}
@@ -261,10 +266,12 @@ const Step6Images: React.FC<ImagesProps> = ({ productData, onInputChange }) => {
                     <div className="flex items-center gap-4">
                       {variation.image ? (
                         <div className="relative">
-                          <img 
+                          <Image 
                             src={variation.image} 
                             alt={`Variation ${index + 1}`} 
                             className="w-24 h-24 object-cover border border-gray-300 rounded"
+                            width={96}
+                            height={96}
                           />
                           <button
                             onClick={() => removeVariationImage(index)}
