@@ -170,7 +170,9 @@ const FlagReportDrawer: React.FC<FlagReportDrawerProps> = ({ open, onClose, flag
           <ul className="flex flex-wrap gap-3">
             {flag.evidence.filter(e => e.image).map((item, idx) => (
               <li key={idx} className="">
-                <Image src={item.image} alt="Evidence" className="rounded-lg max-w-[120px] max-h-24 object-contain border" width={120} height={96} onError={e => (e.currentTarget.style.display = 'none')} />
+                {item.image && (
+                  <Image src={item.image} alt="Evidence" className="rounded-lg max-w-[120px] max-h-24 object-contain border" width={120} height={96} onError={e => (e.currentTarget.style.display = 'none')} />
+                )}
                 <div className="text-xs text-gray-500 mt-1">{item.type}</div>
               </li>
             ))}

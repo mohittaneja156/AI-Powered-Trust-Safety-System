@@ -1,4 +1,6 @@
-export const productReviews ={
+import type { Review } from '@/components/ProductReviews';
+
+export const productReviews: Record<string, Review[]> = {
   "1": [
     // Genuine Reviews
     {

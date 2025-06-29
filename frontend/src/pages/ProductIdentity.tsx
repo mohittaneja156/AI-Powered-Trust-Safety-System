@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent, useEffect, useCallback } from 'react';
 import { FaSearch, FaGlobe, FaEnvelope, FaQuestionCircle, FaTimesCircle, FaCheckCircle, FaExclamationTriangle, FaShieldAlt } from 'react-icons/fa';
 import { FiMenu } from 'react-icons/fi';
 import Image from 'next/image';
@@ -387,11 +387,7 @@ const ProductIdentity = () => {
   const [searchResults, setSearchResults] = useState<ListedProduct[]>([]);
 
   // Fetch listed products on component mount
-  useEffect(() => {
-    fetchListedProducts();
-  }, []);
-
-  const fetchListedProducts = async () => {
+  const fetchListedProducts = useCallback(async () => {
     try {
       const response = await fetch(`${LISTING_API_URL}/products/search`);
       if (response.ok) {
@@ -405,7 +401,11 @@ const ProductIdentity = () => {
       console.error('Error fetching listed products:', error);
       setListedProducts([]);
     }
-  };
+  }, [LISTING_API_URL]);
+
+  useEffect(() => {
+    fetchListedProducts();
+  }, [fetchListedProducts]);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {

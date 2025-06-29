@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaCheckCircle, FaExclamationTriangle, FaCamera } from 'react-icons/fa';
+import Image from 'next/image';
 
 const randomResult = () => (Math.random() > 0.5 ? 'authentic' : 'counterfeit');
 
@@ -43,9 +44,11 @@ const ProductVerify = () => {
         <div className="flex-1 flex flex-col items-center justify-center bg-gray-100 relative w-full">
           {/* Simulated camera view with barcode and scan line */}
           <div className="w-56 h-56 bg-white rounded-2xl shadow flex flex-col items-center justify-center border-2 border-dashed border-gray-400 mt-8 mb-4 relative overflow-hidden">
-            <img
+            <Image
               src="https://www.harborfreight.com/media/catalog/product/cache/95ddc68b3b409c753b895e31eaf85ef8/5/7/57576_W3.jpg"
               alt="Scanned Product"
+              width={144}
+              height={144}
               className="w-36 h-36 object-contain rounded mb-2 z-10"
             />
             {/* Animated scan line */}

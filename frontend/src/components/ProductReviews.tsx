@@ -95,6 +95,7 @@ interface ReviewAnalysis {
     manipulation_detected: boolean;
     similarity_score: number;
   };
+  detailed_analysis?: string;
 }
 
 export default function ProductReviews({ reviews, productTrustScore = 92, productImageUrl = '' }: { reviews: Review[], productTrustScore?: number, productImageUrl?: string }) {
@@ -137,12 +138,10 @@ export default function ProductReviews({ reviews, productTrustScore = 92, produc
               ...review,
               imageScore: analysis.image_score, // Convert to camelCase here
               trustScore: analysis.trust_score,
-              text_score: analysis.text_score,
-              aiStatus: analysis.fake_probability > 0.7 ? 'fake' :
-                       analysis.fake_probability > 0.3 ? 'suspicious' : 'genuine',
+              aiStatus: (analysis.fake_probability > 0.7 ? 'fake' :
+                       analysis.fake_probability > 0.3 ? 'suspicious' : 'genuine') as 'genuine' | 'suspicious' | 'fake',
               aiRecommendation: analysis.recommendation,
-              aiNotes: analysis.detailed_analysis || '',
-              imageAnalysis: analysis.image_analysis
+              aiNotes: analysis.detailed_analysis || ''
             };
           })
         );
@@ -173,6 +172,11 @@ export default function ProductReviews({ reviews, productTrustScore = 92, produc
     // Check if review image matches product image (exact string match)
     const imageMatches = review.images?.length > 0 && 
       review.images[0].trim() === productImageUrl.trim();
+
+    // Check for suspicious text patterns
+    const hasSuspiciousText = SUSPICIOUS_PATTERNS.some(pattern =>
+      review.text.toLowerCase().includes(pattern)
+    );
 
     // Update image score calculation
     const imageScore = imageMatches ? 100 : 20;
@@ -267,9 +271,9 @@ export default function ProductReviews({ reviews, productTrustScore = 92, produc
                   src={review.images[0]} 
                   alt="Review" 
                   className={`w-16 h-16 object-cover rounded-md transition-all duration-200 hover:scale-105 ${
-                    review.imageScore === 100 
-                      ? 'ring-1 ring-green-300' 
-                      : review.imageScore >= 50
+                    (review.imageScore ?? 0) === 100
+                      ? 'ring-1 ring-green-300'
+                      : (review.imageScore ?? 0) >= 50
                         ? 'ring-1 ring-yellow-300'
                         : 'ring-1 ring-red-300'
                   }`}
@@ -290,9 +294,9 @@ export default function ProductReviews({ reviews, productTrustScore = 92, produc
         {/* Trust Score Badge - More subtle design */}
         <div className="mt-3">
           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-            review.trustScore >= 80 
-              ? 'bg-green-50 text-green-700' 
-              : review.trustScore >= 50
+            (review.trustScore ?? 0) >= 80
+              ? 'bg-green-50 text-green-700'
+              : (review.trustScore ?? 0) >= 50
                 ? 'bg-yellow-50 text-yellow-700'
                 : 'bg-red-50 text-red-700'
           }`}>
@@ -394,6 +398,10 @@ export default function ProductReviews({ reviews, productTrustScore = 92, produc
               // Add this line to calculate if insight is open for current review
               const isInsightOpen = insightIdx === idx;
               
+              const hasSuspiciousText = SUSPICIOUS_PATTERNS.some(pattern =>
+                review.text.toLowerCase().includes(pattern)
+              );
+
               return (
                 <ReviewCard 
                   key={idx} 

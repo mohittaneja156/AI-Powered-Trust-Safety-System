@@ -26,7 +26,7 @@ const Header = () => {
             })
         );
         }
-    },[session]);
+    },[session, dispatch]);
     return (
         <div className="w-full h-20 bg-white text-text_primary shadow-md sticky top-0 z-50 border-b border-gray-200">
             <div className="h-full w-full mx-auto flex flex-row items-center justify-between gap-1 px-2 md:px-4 overflow-x-hidden">
