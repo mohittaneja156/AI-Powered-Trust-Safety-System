@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinSecureX v3.0 - Full Prototype</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
+
+        :root {
+            --primary-color: #0052FF;
+            --primary-light: #e6f0ff;
+            --success-color: #0d8a4d;
+            --danger-color: #d92d20;
+            --warning-color: #f79009;
+            --bg-color: #f0f2f5;
+            --card-bg-color: #ffffff;
+            --text-color: #1d2939;
+            --text-light: #667085;
+            --border-color: #e4e7ec;
+            --shadow: 0px 4px 15px rgba(0, 82, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #dbe0e8;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .prototype-wrapper {
+            text-align: center;
+        }
+
+        .prototype-wrapper h1 {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .mobile-frame {
+            width: 100%;
+            max-width: 375px;
+            min-width: 370px;
+            height: 850px;
+            background: linear-gradient(135deg, #f0f2f5 60%, #e6f0ff 100%);
+            border-radius: 40px;
+            box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.22);
+            border: 8px solid #222;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .page {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+            transform: translateY(10px);
+        }
+
+        .page.active { opacity: 1; visibility: visible; transform: translateY(0); }
+
+        .page-header {
+            padding: 1.25rem 1.5rem;
+            flex-shrink: 0;
+            background: var(--card-bg-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .page-header h2 { font-size: 1.5rem; font-weight: 700; }
+        .page-header p { font-size: 1rem; color: var(--text-light); }
+
+        .page-content {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .page-content::-webkit-scrollbar { display: none; }
+        .page-content { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .section-header {
+             display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; margin-bottom: 1rem;
+        }
+        .section-header h3 { font-size: 1.1rem; font-weight: 600; }
+        .section-header a { font-size: 0.9rem; color: var(--primary-color); text-decoration: none; font-weight: 500;}
+
+        /* --- Bottom Nav --- */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: var(--card-bg-color);
+            border-top: 1px solid var(--border-color);
+            padding: 0.5rem 0;
+            flex-shrink: 0;
+        }
+        .nav-item, .nav-item-lender {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: color 0.2s;
+            font-size: 0.7rem;
+            width: 70px;
+            justify-content: center;
+        }
+        .nav-item i, .nav-item-lender i {
+            font-size: 1.25rem;
+            margin-bottom: 4px;
+        }
+        .nav-item.active, .nav-item-lender.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        /* --- Modal Overlays --- */
+        .modal-backdrop {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5); opacity: 0; visibility: hidden;
+            transition: opacity 0.3s; z-index: 100;
+        }
+        .modal-backdrop.active { opacity: 1; visibility: visible; }
+
+        .modal {
+            position: absolute; bottom: 0; left: 0; width: 100%; background-color: var(--bg-color);
+            border-top-left-radius: 24px; border-top-right-radius: 24px; z-index: 101;
+            transform: translateY(100%); transition: transform 0.3s ease-out;
+            display: flex; flex-direction: column; max-height: 90%;
+        }
+        .modal.active { transform: translateY(0); }
+
+        .modal-header { padding: 1rem 1.5rem; text-align: center; position: relative; }
+        .modal-header .drag-handle {
+            width: 40px; height: 5px; background-color: var(--border-color);
+            border-radius: 2.5px; margin: 0 auto 1rem auto;
+        }
+        .modal-header h3 { font-size: 1.2rem; }
+        .modal-header .close-btn {
+            position: absolute; top: 1.2rem; right: 1.2rem; background: var(--bg-color); border: none;
+            width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+            font-size: 1rem; color: var(--text-light);
+        }
+        .modal-content { padding: 0 1.5rem 1.5rem 1.5rem; overflow-y: auto; }
+        .modal-content::-webkit-scrollbar { display: none; }
+        
+        /* ---- Components ---- */
+        .btn { display: block; width: 100%; padding: 1rem; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; border: none; transition: background-color 0.2s; }
+        .btn-primary { background-color: var(--primary-color); color: white; }
+        .btn-light { background-color: var(--card-bg-color); color: var(--text-color); border: 1px solid var(--border-color); }
+        .btn-danger { background-color: var(--danger-color); color: white;}
+        .button-group { display: flex; gap: 1rem; margin-top: 1.5rem; }
+
+        .data-item { display: flex; align-items: flex-start; padding: 1rem; border-radius: 12px; background: var(--card-bg-color); margin-bottom: 0.75rem; }
+        .data-item .icon { font-size: 1.2rem; color: var(--primary-color); margin-right: 1rem; margin-top: 4px; }
+        .data-item .details h4 { font-weight: 500; }
+        .data-item .details p { font-size: 0.85rem; color: var(--text-light); }
+
+        .service-card {
+            background-color: var(--card-bg-color); padding: 1rem; border-radius: 16px; margin-bottom: 1rem;
+            display: flex; align-items: center; cursor: pointer; transition: transform 0.2s;
+        }
+        .service-card:hover { transform: scale(1.02); }
+        .service-card .logo {
+            width: 48px; height: 48px; border-radius: 12px; margin-right: 1rem;
+            display: flex; justify-content: center; align-items: center;
+            font-weight: bold; font-size: 1.2rem; color: var(--text-color); background-color: var(--bg-color);
+        }
+        .service-card .details { flex-grow: 1; }
+        .service-card h4 { font-weight: 600; }
+        .service-card p { font-size: 0.85rem; color: var(--text-light); }
+        .service-card .status { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 500; }
+        .service-card .status.active { background-color: #e7f4ee; color: var(--success-color); }
+        .service-card .status.revoked { background-color: #f2f4f7; color: var(--text-light); }
+        .service-card .status.pending { background-color: #FEF3E2; color: var(--warning-color); }
+        
+        /* ---- Home Page ---- */
+        .pending-card {
+            display: flex; align-items: center; padding: 1rem; background: var(--primary-light);
+            border-radius: 16px; cursor: pointer; border: 1px solid var(--primary-color);
+        }
+        .pending-card .icon { font-size: 1.5rem; color: var(--primary-color); margin-right: 1rem;}
+        .pending-card h4 { font-weight: 600; }
+        .pending-card p { color: var(--primary-color); font-size: 0.9rem; }
+        .pending-card .arrow { margin-left: auto; color: var(--primary-color); }
+
+        /* ---- Activity Page ---- */
+        .timeline { position: relative; }
+        .timeline-item { display: flex; margin-bottom: 1.5rem; position: relative; padding-left: 2.5rem; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: 19px; top: 40px; height: calc(100% - 20px);
+            width: 2px; background-color: var(--border-color);
+        }
+        .timeline-item:last-child::before { display: none; }
+
+        .timeline-item .icon {
+            position: absolute; left: 0; top: 0; width: 40px; height: 40px; border-radius: 50%;
+            background-color: var(--card-bg-color); border: 2px solid var(--border-color);
+            display: flex; align-items: center; justify-content: center; font-size: 1rem; z-index: 1;
+        }
+        .timeline-item .content h4 { font-weight: 600; }
+        .timeline-item .content p { color: var(--text-light); font-size: 0.9rem; }
+
+        /* ---- Services Page ---- */
+        .filter-bar { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .filter-btn { padding: 0.5rem 1rem; border: 1px solid var(--border-color); border-radius: 16px; background: var(--card-bg-color); cursor: pointer; font-weight: 500; }
+        .filter-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+
+        /* ---- Rights Page ---- */
+         .rights-card {
+            display: flex; align-items: center; cursor: pointer; background: var(--card-bg-color);
+            padding: 1.25rem; border-radius: 16px; margin-bottom: 1rem; transition: transform 0.2s;
+        }
+        .rights-card:hover { transform: scale(1.02); }
+        .rights-card .icon {
+            font-size: 1.2rem; width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; margin-right: 1rem;
+        }
+        .rights-card .info h3 { font-size: 1rem; font-weight: 600; }
+        .rights-card .info p { font-size: 0.85rem; color: var(--text-light); }
+        .rights-card .arrow { margin-left: auto; color: var(--text-light); }
+
+        /* ---- LenderX Simulation Frame Styles ---- */
+        .lender-frame { border-color: #444; }
+        .log-entry {
+            padding: 0.75rem 1rem; margin-bottom: 0.5rem; border-radius: 8px;
+            font-size: 0.9rem; display: flex; align-items: center; gap: 0.75rem;
+        }
+        .log-entry.success { background-color: #e7f4ee; color: var(--success-color); }
+        .log-entry.failure { background-color: #ffebe9; color: var(--danger-color); }
+
+        /* ---- New Styles for User Side ---- */
+        .card {
+            background-color: var(--card-bg-color);
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+        .badge.success { background-color: #e7f4ee; color: var(--success-color); }
+        .badge.danger { background-color: #ffebe9; color: var(--danger-color); }
+        .badge.info { background-color: #f2f4f7; color: var(--text-light); }
+        .chart-container {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .countdown {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        .compliance-status {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--success-color);
+        }
+        .lender-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--card-bg-color);
+        }
+        .lender-tab {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .lender-tab.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="prototype-wrapper">
+        <h1>Your Fintech App (User: Rohan)</h1>
+        <div class="mobile-frame" id="userApp">
+            <main>
+                <div id="homePage" class="page active">
+                    <div class="page-header">
+                        <p>Hello, Rohan</p>
+                        <h2>Privacy Dashboard</h2>
+                    </div>
+                    <div class="page-content">
+                        <div id="pendingRequestCard" class="pending-card">
+                            <div class="icon"><i class="fa-solid fa-bell fa-shake"></i></div>
+                            <div class="info">
+                                <h4>New Sharing Request</h4>
+                                <p>LenderX wants to verify your income</p>
+                            </div>
+                            <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                        </div>
+
+                        <div class="section-header" style="margin-top:1.5rem;"><h3>At a Glance</h3></div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="service-card" style="flex-direction: column; align-items: flex-start; padding: 1rem;">
+                                <div style="font-size: 1.5rem; font-weight: 700;" id="activeConnectionsStat">3</div>
+                                <p style="font-size: 0.9rem;">Active Shares</p>
+                            </div>
+                             <div class="service-card" style="flex-direction: column; align-items: flex-start; padding: 1rem;">
+                                <div style="font-size: 1.5rem; font-weight: 700;" id="dataPointsStat">7</div>
+                                <p style="font-size: 0.9rem;">Data Points Shared</p>
+                            </div>
+                        </div>
+
+                        <div class="section-header">
+                            <h3>Recent Activity</h3>
+                            <a href="#" class="view-all-activity">View All</a>
+                        </div>
+                        <div id="homeActivityLog"></div>
+                    </div>
+                </div>
+
+                <div id="servicesPage" class="page">
+                    <div class="page-header"><h2>Connected Services</h2></div>
+                    <div class="page-content">
+                        <div class="filter-bar">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="active">Active</button>
+                            <button class="filter-btn" data-filter="revoked">Revoked</button>
+                        </div>
+                        <div id="servicesListContainer"></div>
+                    </div>
+                </div>
+
+                <div id="activityPage" class="page">
+                    <div class="page-header"><h2>Full Activity Log</h2></div>
+                    <div class="page-content">
+                        <div class="filter-bar">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="share">Data Shared</button>
+                            <button class="filter-btn" data-filter="consent">Consent</button>
+                            <button class="filter-btn" data-filter="revoke">Revoked</button>
+                        </div>
+                        <div class="timeline" id="activityLogContainer"></div>
+                    </div>
+                </div>
+
+                <div id="rightsPage" class="page">
+                    <div class="page-header"><h2>Manage Your Rights</h2></div>
+                    <div class="page-content">
+                        <p class="text-light" style="margin-bottom:1.5rem;">As per the DPDP Act, you can submit requests to manage your personal data.</p>
+                        <div class="rights-card" data-right="access">
+                            <div class="icon" style="background:var(--primary-light); color:var(--primary-color);"><i class="fa-solid fa-file-arrow-down"></i></div>
+                            <div class="info"><h3>Right to Access</h3><p>Request a full copy of your data</p><span class="badge info"><i class="fa-solid fa-clock"></i> Pending</span></div>
+                            <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                        </div>
+                        <div class="rights-card" data-right="rectification">
+                            <div class="icon" style="background:#e7f4ee; color:var(--success-color);"><i class="fa-solid fa-pencil"></i></div>
+                            <div class="info"><h3>Right to Rectification</h3><p>Correct or update your information</p><span class="badge success"><i class="fa-solid fa-check"></i> Approved</span></div>
+                            <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                        </div>
+                        <div class="rights-card" data-right="erasure">
+                            <div class="icon" style="background:#ffebe9; color:var(--danger-color);"><i class="fa-solid fa-user-slash"></i></div>
+                            <div class="info"><h3>Right to Erasure</h3><p>Request deletion of your data</p><span class="badge danger"><i class="fa-solid fa-ban"></i> Not requested</span></div>
+                            <div class="arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="profilePage" class="page">
+                    <div class="page-header"><h2>Profile</h2></div>
+                    <div class="page-content">
+                        <div style="text-align:center; margin-bottom:1.5rem;">
+                            <img src="https://placehold.co/100x100/E6F0FF/0052FF?text=R" style="border-radius:50%;">
+                            <h3 style="margin-top:1rem; font-weight:700;">Rohan</h3>
+                            <p class="text-light">rohan@example.com</p>
+                        </div>
+                        <div class="card">
+                            <h3>Recent Logins</h3>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.7rem;">
+                                <div><i class="fa-solid fa-mobile-screen-button"></i> Mobile App</div>
+                                <div class="text-light">2 hours ago</div>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.7rem;">
+                                <div><i class="fa-solid fa-desktop"></i> Web Dashboard</div>
+                                <div class="text-light">1 day ago</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Account Settings</h3>
+                            <button class="btn btn-light" style="margin-top:0.7rem;">Change Password</button>
+                            <button class="btn btn-light" style="margin-top:0.7rem;">Manage Devices</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            
+            <nav class="bottom-nav">
+                <button class="nav-item active" data-page="homePage"><i class="fa-solid fa-house"></i>Home</button>
+                <button class="nav-item" data-page="servicesPage"><i class="fa-solid fa-link"></i>Services</button>
+                <button class="nav-item" data-page="activityPage"><i class="fa-solid fa-timeline"></i>Activity</button>
+                <button class="nav-item" data-page="rightsPage"><i class="fa-solid fa-gavel"></i>Rights</button>
+                <button class="nav-item" data-page="profilePage"><i class="fa-solid fa-user"></i>Profile</button>
+            </nav>
+
+            <div id="modalBackdrop" class="modal-backdrop"></div>
+        
+            <div id="consentModal" class="modal">
+                 <div class="modal-header">
+                    <div class="drag-handle"></div><button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-content">
+                    <div style="text-align: center;">
+                        <img src="https://placehold.co/80x80/E6F0FF/0052FF?text=LX" style="border-radius:20px;">
+                        <h3 style="margin-top:1rem; font-weight:700;">LenderX requests access</h3>
+                        <p class="text-light"><strong>Purpose:</strong> To check your loan eligibility</p>
+                    </div>
+                    <h4 style="margin-top:1.5rem; margin-bottom:1rem; font-weight:600;">They are requesting (Data Minimization applied):</h4>
+                    <div class="data-item"><div class="icon"><i class="fa-solid fa-wallet"></i></div><div class="details"><h4>Income Range</h4><p>Only range (e.g., "₹50k-₹70k"), not exact salary.</p></div></div>
+                    <div class="data-item"><div class="icon"><i class="fa-solid fa-star-half-stroke"></i></div><div class="details"><h4>Tokenized Credit Score</h4><p>A secure token, not the actual score number.</p></div></div>
+                    
+                    <div class="button-group">
+                        <button class="btn btn-light close-btn">Deny</button>
+                        <button id="allowBtn" class="btn btn-primary">Allow for 7 days</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="detailModal" class="modal">
+                 <div class="modal-header">
+                    <div class="drag-handle"></div><button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-content" id="detailModalContent"></div>
+            </div>
+
+            <div id="requestModal" class="modal">
+                 <div class="modal-header">
+                    <div class="drag-handle"></div><button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-content" id="requestModalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="prototype-wrapper">
+        <h1>Third-Party App (LenderX)</h1>
+        <div class="mobile-frame lender-frame" id="lenderApp">
+            <main>
+                <div id="lenderDashboard" class="page active">
+                    <div class="page-header">
+                        <h2>LenderX Dashboard</h2>
+                    </div>
+                    <div class="page-content">
+                        <div class="card">
+                            <h3>Consent Status</h3>
+                            <span class="badge success"><i class="fa-solid fa-lock-open"></i> Active</span> <span style="margin-left:1rem; color:#667085;">6 days left</span>
+                        </div>
+                        <div class="card">
+                            <h3>Compliance</h3>
+                            <span class="badge success"><i class="fa-solid fa-check"></i> All accesses within policy</span>
+                        </div>
+                        <div class="card">
+                            <h3>Stats</h3>
+                            <div style="display:flex; gap:1.5rem;">
+                                <div style="text-align:center;"><div style="font-size:1.5rem; font-weight:700;">2</div><div style="font-size:0.9rem;">Income Range Accesses</div></div>
+                                <div style="text-align:center;"><div style="font-size:1.5rem; font-weight:700;">1</div><div style="font-size:0.9rem;">Credit Score Accesses</div></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Data Usage Chart</h3>
+                            <div class="chart-container"><canvas id="lenderDataChart" width="220" height="120"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="lenderAccessLog" class="page">
+                    <div class="page-header"><h2>Access Log</h2></div>
+                    <div class="page-content">
+                        <div class="card">
+                            <h3>Access Timeline</h3>
+                            <div class="log-entry success"><i class="fas fa-check-circle"></i> Accessed Income Range [₹50k-₹70k] - 2 times</div>
+                            <div class="log-entry success"><i class="fas fa-check-circle"></i> Accessed Credit Score (Tokenized) - 1 time</div>
+                            <div class="log-entry failure"><i class="fas fa-times-circle"></i> Attempted PAN Number (Blocked)</div>
+                            <div class="log-entry failure"><i class="fas fa-bolt"></i> Anomaly: Unusual access pattern (auto-blocked)</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="lenderRequests" class="page">
+                    <div class="page-header"><h2>Requests</h2></div>
+                    <div class="page-content">
+                        <div class="card">
+                            <h3>Request New Data</h3>
+                            <select class="btn btn-light" style="margin-bottom:0.7rem;">
+                                <option>Income Range</option>
+                                <option>Credit Score</option>
+                                <option>Transaction History</option>
+                                <option>PAN Number (Out of scope)</option>
+                            </select>
+                            <input class="btn btn-light" style="margin-bottom:0.7rem;" placeholder="Purpose (e.g., loan processing)">
+                            <input class="btn btn-light" style="margin-bottom:0.7rem;" placeholder="Duration (e.g., 7 days)">
+                            <button class="btn btn-primary" id="requestNewDataBtn">Request Data</button>
+                        </div>
+                        <div class="card">
+                            <h3>Pending Requests</h3>
+                            <div class="log-entry" style="background:#FEF3E2; color:#f79009;"><i class="fas fa-hourglass-half"></i> Income Range (loan processing) - Pending</div>
+                        </div>
+                        <div class="card">
+                            <h3>SDK Enforcement Log</h3>
+                            <button class="btn btn-light" id="attemptIncome" style="margin-bottom: 0.5rem; text-align: left;">1. Access Income Range</button>
+                            <button class="btn btn-light" id="attemptPAN" style="margin-bottom: 0.5rem; text-align: left;">2. Access PAN Number (Out of scope)</button>
+                            <button class="btn btn-light" id="attemptCopy" style="margin-bottom: 0.5rem; text-align: left;">3. Attempt to Copy Data (Policy violation)</button>
+                            <div id="lenderLog">
+                                <div class="log-entry" style="background: #f2f4f7; color: var(--text-light);"><i class="fas fa-info-circle"></i>Awaiting user consent...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <nav class="bottom-nav">
+                <button class="nav-item-lender active" data-lender-page="lenderDashboard"><i class="fa-solid fa-gauge"></i>Dashboard</button>
+                <button class="nav-item-lender" data-lender-page="lenderAccessLog"><i class="fa-solid fa-list"></i>Access Log</button>
+                <button class="nav-item-lender" data-lender-page="lenderRequests"><i class="fa-solid fa-database"></i>Requests</button>
+            </nav>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- MOCK DATABASE ---
+        let db = {
+            services: {
+                'lenderX': { name: 'LenderX', logo: 'LX', status: 'pending', purpose: 'To check loan eligibility', data: ['Income Range', 'Tokenized Credit Score'], cat: ['Financial', 'Identity'], expires: '7 days from consent'},
+                'investWell': { name: 'InvestWell', logo: 'IW', status: 'active', purpose: 'For Portfolio Analysis', data: ['Transaction History', 'Risk Profile'], cat: ['Financial', 'Behavioral'], expires: 'in 3 months'},
+                'policyNow': { name: 'PolicyNow', logo: 'PN', status: 'active', purpose: 'To suggest insurance plans', data: ['Age', 'Income Range'], cat: ['Identity', 'Financial'], expires: 'in 12 days'},
+                'quickCash': { name: 'QuickCash', logo: 'QC', status: 'active', purpose: 'For Credit Line', data: ['PAN Number (Tokenized)', 'Contact List Hash'], cat: ['Identity', 'Contact'], expires: 'in 25 days'},
+                'budgetBuddy': { name: 'BudgetBuddy', logo: 'BB', status: 'revoked', purpose: 'For Expense Tracking', data: ['Transaction Categories'], cat: [] }
+            },
+            activityLog: [
+                { id: 4, action: 'Access Revoked', who: 'You', target: 'BudgetBuddy', time: 'May 28, 4:00 PM', icon: 'fa-ban', color: 'var(--danger-color)' },
+                { id: 3, action: 'Data Shared', who: 'System', target: 'InvestWell', time: 'June 12, 11:30 AM', icon: 'fa-share-nodes', color: 'var(--primary-color)' },
+                { id: 2, action: 'Consent Given', who: 'You', target: 'InvestWell', time: 'June 12, 11:29 AM', icon: 'fa-check-to-slot', color: 'var(--success-color)' },
+                { id: 1, action: 'App Installed', who: 'You', target: 'FinSecureX', time: 'June 1, 9:00 AM', icon: 'fa-download', color: 'var(--text-light)' },
+            ]
+        };
+
+        const elements = {
+            navItems: document.querySelectorAll('#userApp .nav-item'),
+            pages: document.querySelectorAll('#userApp .page'),
+            modalBackdrop: document.getElementById('modalBackdrop'),
+            modals: document.querySelectorAll('#userApp .modal'),
+            closeButtons: document.querySelectorAll('#userApp .close-btn'),
+            pendingRequestCard: document.getElementById('pendingRequestCard'),
+            allowBtn: document.getElementById('allowBtn'),
+            servicesListContainer: document.getElementById('servicesListContainer'),
+            filterBar: document.querySelector('#servicesPage .filter-bar'),
+            activityLogContainer: document.getElementById('activityLogContainer'),
+            homeActivityLog: document.getElementById('homeActivityLog'),
+            viewAllActivityBtn: document.querySelector('.view-all-activity'),
+            rightsCards: document.querySelectorAll('.rights-card'),
+            lenderLog: document.getElementById('lenderLog'),
+            lenderStatusCard: document.getElementById('lenderStatusCard'),
+            attemptIncomeBtn: document.getElementById('attemptIncome'),
+            attemptPANBtn: document.getElementById('attemptPAN'),
+            attemptCopyBtn: document.getElementById('attemptCopy'),
+        };
+
+        // --- SHARED STATE FOR REQUESTS ---
+        let sharedState = {
+            pendingRequest: null, // { user: 'Rohan', dataType: 'Income Range', purpose: 'Loan', duration: '7 days', status: 'pending'|'granted'|'denied' }
+        };
+
+        // --- CORE LOGIC ---
+        function showPage(pageId) {
+            elements.pages.forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            elements.navItems.forEach(n => n.classList.remove('active'));
+            document.querySelector(`.nav-item[data-page='${pageId}']`).classList.add('active');
+        }
+
+        function showModal(modalId) {
+            elements.modalBackdrop.classList.add('active');
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function hideAllModals() {
+            elements.modalBackdrop.classList.remove('active');
+            elements.modals.forEach(m => m.classList.remove('active'));
+        }
+        
+        function addActivity(entry) {
+            entry.id = db.activityLog.length + 1;
+            db.activityLog.unshift(entry); // Add to the beginning
+            renderActivityLog();
+            renderHomePage();
+        }
+
+        function addLenderLog(message, type) {
+            const icon = type === 'success' ? 'fa-check-circle' : 'fa-times-circle';
+            const entry = `<div class="log-entry ${type}"><i class="fas ${icon}"></i> ${message}</div>`;
+            elements.lenderLog.innerHTML = entry + elements.lenderLog.innerHTML;
+        }
+
+        // --- RENDER FUNCTIONS ---
+        function renderHomePage() {
+            const activeServices = Object.values(db.services).filter(s => s.status === 'active');
+            document.getElementById('activeConnectionsStat').textContent = activeServices.length;
+            const totalDataPoints = activeServices.reduce((sum, s) => sum + s.data.length, 0);
+            document.getElementById('dataPointsStat').textContent = totalDataPoints;
+
+            elements.pendingRequestCard.style.display = db.services.lenderX.status === 'pending' ? 'flex' : 'none';
+
+            // Render recent 2 activities on home
+            elements.homeActivityLog.innerHTML = db.activityLog.slice(0, 2).map(item => `
+                 <div class="service-card" style="padding: 0.75rem;">
+                    <div class="logo" style="width:36px; height:36px; background-color:${item.color}; color:white;"><i class="fa-solid ${item.icon}"></i></div>
+                    <div class="details">
+                        <h4>${item.action}: ${item.target}</h4>
+                        <p>${item.time}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Show pending request card if exists
+            const pendingCard = document.getElementById('pendingRequestCard');
+            if (sharedState.pendingRequest && sharedState.pendingRequest.status === 'pending') {
+                pendingCard.style.display = 'flex';
+                pendingCard.querySelector('.info h4').textContent = 'New Sharing Request';
+                pendingCard.querySelector('.info p').textContent = `${sharedState.pendingRequest.user === 'Rohan' ? 'LenderX wants to access your ' + sharedState.pendingRequest.dataType : ''}`;
+            } else {
+                pendingCard.style.display = 'none';
+            }
+        }
+        
+        function renderServicesList(filter = 'all') {
+            const filteredServices = Object.values(db.services).filter(s => filter === 'all' || s.status === filter);
+            elements.servicesListContainer.innerHTML = filteredServices.map((service, index) => {
+                const serviceId = Object.keys(db.services)[index];
+                return `
+                <div class="service-card" data-service-id="${serviceId}">
+                    <div class="logo">${service.logo}</div>
+                    <div class="details">
+                        <h4>${service.name}</h4>
+                        <p>Purpose: ${service.purpose}</p>
+                    </div>
+                    <span class="status ${service.status}">${service.status}</span>
+                </div>`
+            }).join('');
+
+            // Add event listeners after rendering
+            document.querySelectorAll('.service-card[data-service-id]').forEach(card => {
+                card.addEventListener('click', () => showDetailModal(card.dataset.serviceId));
+            });
+        }
+
+        function renderActivityLog() {
+            elements.activityLogContainer.innerHTML = db.activityLog.map(item => `
+                <div class="timeline-item">
+                    <div class="icon" style="color: ${item.color}; border-color: ${item.color};">
+                        <i class="fa-solid ${item.icon}"></i>
+                    </div>
+                    <div class="content">
+                        <h4>${item.action}: ${item.target}</h4>
+                        <p>Triggered by: ${item.who} &bull; ${item.time}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderLenderApp() {
+            const lenderX = db.services.lenderX;
+            if (lenderX.status === 'active') {
+                elements.lenderStatusCard.innerHTML = `
+                    <div class="data-item" style="background-color: #e7f4ee;">
+                        <div class="icon" style="color:var(--success-color);"><i class="fa-solid fa-lock-open"></i></div>
+                        <div class="details">
+                            <h4>Access Granted</h4>
+                            <p>Consent from Rohan received. Expires ${lenderX.expires}.</p>
+                        </div>
+                    </div>`;
+            } else if (lenderX.status === 'revoked') {
+                 elements.lenderStatusCard.innerHTML = `
+                    <div class="data-item" style="background-color: #ffebe9;">
+                        <div class="icon" style="color:var(--danger-color);"><i class="fa-solid fa-lock"></i></div>
+                        <div class="details">
+                            <h4>Access Revoked</h4>
+                            <p>User has revoked consent. All data purged.</p>
+                        </div>
+                    </div>`;
+            } else { // pending
+                 elements.lenderStatusCard.innerHTML = `
+                    <div class="data-item" style="background-color: #FEF3E2;">
+                        <div class="icon" style="color:var(--warning-color);"><i class="fa-solid fa-hourglass-half"></i></div>
+                        <div class="details">
+                            <h4>Awaiting Consent</h4>
+                            <p>Data request sent to user Rohan.</p>
+                        </div>
+                    </div>`;
+            }
+        }
+
+        // --- MODAL CONTENT FUNCTIONS ---
+        function showDetailModal(serviceId) {
+            const service = db.services[serviceId];
+            const content = `
+                <div style="text-align: center;">
+                    <div class="logo" style="width:80px; height:80px; border-radius:20px; margin:auto; font-size:2.5rem;">${service.logo}</div>
+                    <h3 style="margin-top:1rem; font-weight:700;">${service.name}</h3>
+                    <span class="status ${service.status}" style="margin-top:0.5rem;">${service.status}</span>
+                </div>
+                <h4 style="margin-top:1.5rem; margin-bottom:1rem; font-weight:600;">Data Shared:</h4>
+                ${service.data.map(d => `<div class="data-item"><div class="icon"><i class="fa-solid fa-database"></i></div><div class="details"><h4>${d}</h4></div></div>`).join('')}
+                <div class="data-item">
+                    <div class="icon"><i class="fa-solid fa-bullseye"></i></div>
+                    <div class="details"><h4>Purpose of Use</h4><p>${service.purpose}</p></div>
+                </div>
+                ${service.status === 'active' ? `
+                <div class="data-item">
+                    <div class="icon"><i class="fa-solid fa-calendar-times"></i></div>
+                    <div class="details"><h4>Consent Expires</h4><p>${service.expires}</p></div>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-danger" id="revokeBtn" data-service-id="${serviceId}">Revoke Access</button>
+                </div>` : ''}
+            `;
+            document.getElementById('detailModalContent').innerHTML = content;
+            showModal('detailModal');
+
+            if(service.status === 'active') {
+                document.getElementById('revokeBtn').addEventListener('click', (e) => handleRevoke(e.target.dataset.serviceId));
+            }
+        }
+
+        function showRightsModal(rightType) {
+            const rightsInfo = {
+                access: { title: "Confirm Data Access Request", text: "This will generate a secure report of all your data. Are you sure?", btn: "Submit Access Request"},
+                rectification: { title: "Request Data Correction", text: "You will be redirected to a secure form to specify corrections. Proceed?", btn: "Proceed to Form"},
+                erasure: { title: "Confirm Data Erasure Request", text: "This is irreversible and will delete your data as per the DPDP Act. Are you sure?", btn: "Yes, Erase My Data"}
+            };
+            const info = rightsInfo[rightType];
+             const content = `
+                <div style="text-align: center;">
+                     <h3 style="margin-top:1rem; font-weight:700;">${info.title}</h3>
+                     <p class="text-light" style="margin-top:0.5rem;">${info.text}</p>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-light close-btn">Cancel</button>
+                    <button class="btn btn-primary" id="submitRightRequest">${info.btn}</button>
+                </div>
+            `;
+            document.getElementById('requestModalContent').innerHTML = content;
+            showModal('requestModal');
+            document.getElementById('submitRightRequest').onclick = () => {
+                alert('Request Submitted! You will be notified once it is processed.');
+                hideAllModals();
+            }
+        }
+
+
+        // --- EVENT HANDLERS ---
+        elements.navItems.forEach(item => item.addEventListener('click', () => showPage(item.dataset.page)));
+        elements.closeButtons.forEach(btn => btn.addEventListener('click', hideAllModals));
+        elements.modalBackdrop.addEventListener('click', hideAllModals);
+        elements.pendingRequestCard.addEventListener('click', () => showModal('consentModal'));
+        elements.viewAllActivityBtn.addEventListener('click', (e) => { e.preventDefault(); showPage('activityPage'); });
+        
+        elements.allowBtn.addEventListener('click', () => {
+            // Update DB
+            db.services.lenderX.status = 'active';
+            const now = new Date();
+            addActivity({
+                action: 'Consent Given', who: 'You', target: 'LenderX', time: 'Just now', 
+                icon: 'fa-check-to-slot', color: 'var(--success-color)'
+            });
+             addActivity({
+                action: 'Data Shared', who: 'System', target: 'LenderX', time: 'Just now', 
+                icon: 'fa-share-nodes', color: 'var(--primary-color)'
+            });
+            
+            // Re-render UI
+            hideAllModals();
+            renderHomePage();
+            renderServicesList(elements.filterBar.querySelector('.active').dataset.filter);
+            renderLenderApp();
+            addLenderLog('Consent received. API is now active.', 'success');
+        });
+
+        elements.filterBar.addEventListener('click', (e) => {
+            if (e.target.classList.contains('filter-btn')) {
+                elements.filterBar.querySelector('.active').classList.remove('active');
+                e.target.classList.add('active');
+                renderServicesList(e.target.dataset.filter);
+            }
+        });
+
+        elements.rightsCards.forEach(card => card.addEventListener('click', (e) => showRightsModal(card.dataset.right)));
+
+        function handleRevoke(serviceId) {
+            if(confirm(`Are you sure you want to revoke access for ${db.services[serviceId].name}?`)) {
+                db.services[serviceId].status = 'revoked';
+                 addActivity({
+                    action: 'Access Revoked', who: 'You', target: db.services[serviceId].name, time: 'Just now',
+                    icon: 'fa-ban', color: 'var(--danger-color)'
+                });
+                hideAllModals();
+                renderHomePage();
+                renderServicesList(elements.filterBar.querySelector('.active').dataset.filter);
+                if (serviceId === 'lenderX') {
+                    renderLenderApp();
+                    addLenderLog('User revoked consent. Access denied.', 'failure');
+                }
+            }
+        }
+        
+        // --- LenderX Simulation Event Handlers ---
+        elements.attemptIncomeBtn.addEventListener('click', () => {
+            if(db.services.lenderX.status === 'active') {
+                addLenderLog('SUCCESS: Accessed Income Range [₹50k-₹70k]', 'success');
+            } else {
+                addLenderLog('FAILURE: No active consent to access Income Range', 'failure');
+            }
+        });
+        elements.attemptPANBtn.addEventListener('click', () => {
+             addLenderLog('FAILURE: Access to PAN Number is not in scope. (Policy-Blocked)', 'failure');
+        });
+        elements.attemptCopyBtn.addEventListener('click', () => {
+             addLenderLog('FAILURE: Data copy operation is forbidden by contract. (Policy-Blocked)', 'failure');
+        });
+
+        // --- LenderX Bottom Navigation ---
+        const lenderNavItems = document.querySelectorAll('.nav-item-lender');
+        const lenderPages = document.querySelectorAll('#lenderApp .page');
+        lenderNavItems.forEach(item => item.addEventListener('click', () => {
+            lenderNavItems.forEach(n => n.classList.remove('active'));
+            item.classList.add('active');
+            lenderPages.forEach(p => p.classList.remove('active'));
+            document.getElementById(item.dataset.lenderPage).classList.add('active');
+        }));
+        // --- LenderX Chart ---
+        const ctxLender = document.getElementById('lenderDataChart').getContext('2d');
+        new Chart(ctxLender, {
+            type: 'bar',
+            data: {
+                labels: ['Income Range', 'Credit Score'],
+                datasets: [{
+                    label: 'Accesses',
+                    data: [2, 1],
+                    backgroundColor: ['#0052FF', '#0d8a4d'],
+                    borderWidth: 1
+                }]
+            },
+            options: { responsive: false, plugins: { legend: { display: false } } }
+        });
+
+        // --- LenderX Request Data Logic ---
+        const lenderRequestBtn = document.getElementById('requestNewDataBtn');
+        if (lenderRequestBtn) {
+            lenderRequestBtn.onclick = function() {
+                const dataType = document.querySelector('#lenderRequests select').value;
+                const purpose = document.querySelector('#lenderRequests input[placeholder^="Purpose"]').value || 'Loan';
+                const duration = document.querySelector('#lenderRequests input[placeholder^="Duration"]').value || '7 days';
+                sharedState.pendingRequest = {
+                    user: 'Rohan',
+                    dataType,
+                    purpose,
+                    duration,
+                    status: 'pending'
+                };
+                renderLenderRequests();
+                renderHomePage();
+            };
+        }
+
+        // --- Rohan User App: Show Pending Request ---
+        function renderLenderRequests() {
+            const requestsPage = document.getElementById('lenderRequests');
+            if (!requestsPage) return;
+            const pendingDiv = requestsPage.querySelector('.card:nth-child(2)');
+            if (pendingDiv) {
+                if (sharedState.pendingRequest) {
+                    let statusColor = '#FEF3E2', statusText = 'Pending', icon = 'fa-hourglass-half';
+                    if (sharedState.pendingRequest.status === 'granted') { statusColor = '#e7f4ee'; statusText = 'Granted'; icon = 'fa-check-circle'; }
+                    if (sharedState.pendingRequest.status === 'denied') { statusColor = '#ffebe9'; statusText = 'Denied'; icon = 'fa-times-circle'; }
+                    pendingDiv.innerHTML = `<h3>Pending Requests</h3>
+                        <div class="log-entry" style="background:${statusColor}; color:#222;"><i class="fas ${icon}"></i> ${sharedState.pendingRequest.dataType} (${sharedState.pendingRequest.purpose}) - ${statusText}</div>`;
+                } else {
+                    pendingDiv.innerHTML = `<h3>Pending Requests</h3><div class="text-light">No pending requests</div>`;
+                }
+            }
+        }
+
+        // --- Add User Dropdown in LenderX Requests ---
+        const userDropdown = document.createElement('select');
+        userDropdown.className = 'btn btn-light';
+        userDropdown.style.marginBottom = '0.7rem';
+        userDropdown.innerHTML = '<option>Rohan</option>';
+        const reqCard = document.querySelector('#lenderRequests .card');
+        if (reqCard && !reqCard.querySelector('select')) {
+            reqCard.insertBefore(userDropdown, reqCard.firstChild);
+        }
+
+        // --- Patch: Show Consent Modal on Rohan side when pending ---
+        const pendingRequestCard = document.getElementById('pendingRequestCard');
+        if (pendingRequestCard) {
+            pendingRequestCard.onclick = function() {
+                if (sharedState.pendingRequest && sharedState.pendingRequest.status === 'pending') {
+                    showModal('consentModal');
+                }
+            };
+        }
+
+        // --- Patch: Update LenderX Dashboard Consent Status ---
+        function renderLenderDashboard() {
+            const dash = document.getElementById('lenderDashboard');
+            if (!dash) return;
+            const consentCard = dash.querySelector('.card');
+            if (consentCard && sharedState.pendingRequest) {
+                let badge = '<span class="badge success"><i class="fa-solid fa-lock-open"></i> Active</span> <span style="margin-left:1rem; color:#667085;">6 days left</span>';
+                if (sharedState.pendingRequest.status === 'pending') badge = '<span class="badge info"><i class="fa-solid fa-hourglass-half"></i> Pending</span>';
+                if (sharedState.pendingRequest.status === 'denied') badge = '<span class="badge danger"><i class="fa-solid fa-times-circle"></i> Denied</span>';
+                consentCard.innerHTML = `<h3>Consent Status</h3>${badge}`;
+            }
+        }
+
+        // --- Patch: Call renderers on state change ---
+        function updateAll() {
+            renderHomePage();
+            renderLenderRequests();
+            renderLenderDashboard();
+        }
+        // Patch all relevant actions to call updateAll
+        if (lenderRequestBtn) lenderRequestBtn.onclick = function() {
+            const dataType = document.querySelector('#lenderRequests select').value;
+            const purpose = document.querySelector('#lenderRequests input[placeholder^="Purpose"]').value || 'Loan';
+            const duration = document.querySelector('#lenderRequests input[placeholder^="Duration"]').value || '7 days';
+            sharedState.pendingRequest = {
+                user: 'Rohan',
+                dataType,
+                purpose,
+                duration,
+                status: 'pending'
+            };
+            updateAll();
+        };
+        if (elements.allowBtn) {
+            elements.allowBtn.onclick = function() {
+                if (sharedState.pendingRequest) {
+                    sharedState.pendingRequest.status = 'granted';
+                    updateAll();
+                }
+                hideAllModals();
+            };
+        }
+        document.querySelectorAll('#consentModal .close-btn').forEach(btn => {
+            btn.onclick = function() {
+                if (sharedState.pendingRequest) {
+                    sharedState.pendingRequest.status = 'denied';
+                    updateAll();
+                }
+                hideAllModals();
+            };
+        });
+        if (pendingRequestCard) pendingRequestCard.onclick = function() {
+            if (sharedState.pendingRequest && sharedState.pendingRequest.status === 'pending') {
+                showModal('consentModal');
+            }
+        };
+        // Initial render
+        updateAll();
+    });
+    </script>
+</body>
+</html>
