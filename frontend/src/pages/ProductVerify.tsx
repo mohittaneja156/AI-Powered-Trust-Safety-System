@@ -24,7 +24,7 @@ const ProductVerify = () => {
       <div className="max-w-md w-full mb-8 text-center">
         <h1 className="text-2xl font-bold text-gray-800 mb-2">Product Authenticity Scanner</h1>
         <p className="text-gray-600 text-sm mb-4">
-          Instantly verify your product's authenticity after delivery. Scan the barcode, QR code, or packaging to check if your item is genuine.
+          Instantly verify your product&apos;s authenticity after delivery. Scan the barcode, QR code, or packaging to check if your item is genuine.
         </p>
       </div>
       {/* Phone Mockup */}
@@ -75,7 +75,7 @@ const ProductVerify = () => {
               )}
               {scanResult === 'authentic'
                 ? '✅ Product appears authentic'
-                : '❗ Suspected counterfeit. Please start a return.'}
+                : '\u2757 Suspected counterfeit. Please start a return.'}
             </div>
           )}
         </div>

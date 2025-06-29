@@ -663,7 +663,7 @@ const ProductIdentity = () => {
                   <input type="text" className="flex-1 border border-gray-300 rounded px-4 py-2 text-base focus:border-primary focus:outline-none" value={search} onChange={e => setSearch(e.target.value)} />
                   <button type="submit" className="bg-primary text-white px-6 py-2 rounded font-semibold hover:bg-primary_dark transition-colors duration-200 w-full md:w-auto">Submit</button>
                 </form>
-                <span className="text-xs text-text_secondary">Can't find your product in our catalog? <span className="text-primary underline cursor-pointer">Create a new listing</span></span>
+                <span className="text-xs text-text_secondary">Can&apos;t find your product in our catalog? <span className="text-primary underline cursor-pointer">Create a new listing</span></span>
               </div>
               {/* Results List */}
               <div className="divide-y divide-gray-200">

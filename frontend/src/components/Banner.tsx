@@ -54,7 +54,7 @@ const Banner = () =>{
                     <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent flex items-center">
                         <div className="text-white ml-8 md:ml-16">
                             <h2 className="text-2xl md:text-4xl font-bold mb-2">24/7 Customer Support</h2>
-                            <p className="text-lg md:text-xl">We're here to help you anytime</p>
+                            <p className="text-lg md:text-xl">We&apos;re here to help you anytime</p>
                         </div>
                     </div>
                 </div>

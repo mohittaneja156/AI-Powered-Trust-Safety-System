@@ -73,7 +73,7 @@ const Step1ProductIdentity: React.FC<ProductIdentityProps> = ({ productData, onI
             <ul className="mt-2 space-y-1 text-xs">
               <li>• Start with brand name followed by primary keyword</li>
               <li>• Capitalize first letter of each word (except prepositions, conjunctions, articles)</li>
-              <li>• Use numerals instead of spelling out numbers (e.g., "2-Pack" not "Two-Pack")</li>
+              <li>• Use numerals instead of spelling out numbers (e.g., &quot;2-Pack&quot; not &quot;Two-Pack&quot;)</li>
               <li>• Avoid characters: !, $, ?, _, &#123;, &#125;, ^, ¬, ¦</li>
               <li>• Do not use the same word more than twice</li>
               <li>• Include size and color for product variations</li>
@@ -169,7 +169,7 @@ const Step1ProductIdentity: React.FC<ProductIdentityProps> = ({ productData, onI
                 </label>
               </div>
               <p className="text-xs text-gray-500 mt-1">
-                Select "Yes" if you have different sizes, colors, or styles of the same product
+                Select &quot;Yes&quot; if you have different sizes, colors, or styles of the same product
               </p>
             </div>
           </div>

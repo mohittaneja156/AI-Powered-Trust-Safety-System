@@ -80,7 +80,7 @@ const Step5Variations: React.FC<VariationsProps> = ({ productData, onInputChange
                 </label>
               </div>
               <p className="text-xs text-gray-500 mt-1">
-                Select "Yes" if you have different sizes, colors, or styles of the same product
+                Select &quot;Yes&quot; if you have different sizes, colors, or styles of the same product
               </p>
             </div>
 
@@ -130,7 +130,7 @@ const Step5Variations: React.FC<VariationsProps> = ({ productData, onInputChange
               {productData.variations.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
                   <p>No variations added yet.</p>
-                  <p className="text-sm">Click "Add Variation" to get started.</p>
+                  <p className="text-sm">Click &quot;Add Variation&quot; to get started.</p>
                 </div>
               ) : (
                 <div className="space-y-4">

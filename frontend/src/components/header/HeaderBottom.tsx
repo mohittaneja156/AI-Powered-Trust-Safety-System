@@ -20,7 +20,7 @@ const HeaderBottom = () =>{
             </p>
             {/* Mobile: all links in scrollable row */}
             <div className="flex md:hidden flex-row gap-2 overflow-x-auto w-full">
-                <p className="flex items-center gap-1 h-8 px-2 border border-transparent hover:border-primary hover:text-primary cursor-pointer duration-300 whitespace-nowrap">Today's Deals</p>
+                <p className="flex items-center gap-1 h-8 px-2 border border-transparent hover:border-primary hover:text-primary cursor-pointer duration-300 whitespace-nowrap">Today&apos;s Deals</p>
                 <p className="flex items-center gap-1 h-8 px-2 border border-transparent hover:border-primary hover:text-primary cursor-pointer duration-300 whitespace-nowrap">New Arrivals</p>
                 <p className="flex items-center gap-1 h-8 px-2 border border-transparent hover:border-primary hover:text-primary cursor-pointer duration-300 whitespace-nowrap">Best Sellers</p>
                 <p className="flex items-center gap-1 h-8 px-2 border border-transparent hover:border-primary hover:text-primary cursor-pointer duration-300 whitespace-nowrap">Electronics</p>
@@ -33,7 +33,7 @@ const HeaderBottom = () =>{
                 <p className="flex items-center gap-1 h-8 px-2 border border-transparent hover:border-primary hover:text-primary cursor-pointer duration-300 whitespace-nowrap">Customer Service</p>
             </div>
             {/* Desktop: original links */}
-            <p className="hidden md:inline-flex flex items-center gap-1 h-8 px-2 border border-transparent hover:border-primary hover:text-primary cursor-pointer duration-300">Today's Deals</p>
+            <p className="hidden md:inline-flex flex items-center gap-1 h-8 px-2 border border-transparent hover:border-primary hover:text-primary cursor-pointer duration-300">Today&apos;s Deals</p>
             <p className="hidden md:inline-flex flex items-center gap-1 h-8 px-2 border border-transparent hover:border-primary hover:text-primary cursor-pointer duration-300">New Arrivals</p>
             <p className="hidden md:inline-flex flex items-center gap-1 h-8 px-2 border border-transparent hover:border-primary hover:text-primary cursor-pointer duration-300">Best Sellers</p>
             <p className="hidden md:inline-flex flex items-center gap-1 h-8 px-2 border border-transparent hover:border-primary hover:text-primary cursor-pointer duration-300">Electronics</p>
