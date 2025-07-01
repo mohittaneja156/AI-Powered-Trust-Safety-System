@@ -6,7 +6,6 @@ import torchvision.transforms as transforms
 from torchvision.models import resnet50, ResNet50_Weights
 from transformers import ViTImageProcessor, ViTForImageClassification
 import pytesseract
-from pyzbar.pyzbar import decode
 import logging
 from typing import Dict, List, Tuple, Optional, Union
 import os
@@ -47,13 +46,16 @@ class ProductVerifier:
             self.sift = cv2.SIFT_create()
             self.bf_matcher = cv2.BFMatcher()
             
+            # Initialize QR code detector
+            self.qr_detector = cv2.QRCodeDetector()
+            
             logger.info("ProductVerifier initialized successfully")
         except Exception as e:
             logger.error(f"Error initializing ProductVerifier: {str(e)}")
             raise
 
     def extract_barcode(self, image: np.ndarray) -> Optional[str]:
-        """Extract and verify barcode using multiple methods."""
+        """Extract and verify QR codes using OpenCV's QRCodeDetector."""
         try:
             # Convert to grayscale
             gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -67,19 +69,23 @@ class ProductVerifier:
             ]
             
             for method_name, processed_img in processed_images:
-                # Try different barcode formats
-                barcodes = decode(processed_img)
-                if barcodes:
-                    barcode_data = barcodes[0].data.decode('utf-8')
-                    barcode_type = barcodes[0].type
-                    logger.info(f"Barcode found using {method_name}: {barcode_data} (Type: {barcode_type})")
-                    return barcode_data
+                # Try to detect QR code using OpenCV
+                try:
+                    # QRCodeDetector.detectAndDecode returns (data, bbox, straight_qrcode)
+                    data, bbox, _ = self.qr_detector.detectAndDecode(processed_img)
+                    
+                    if data and len(data) > 0:
+                        logger.info(f"QR code found using {method_name}: {data}")
+                        return data
+                except Exception as e:
+                    logger.debug(f"QR detection failed for {method_name}: {str(e)}")
+                    continue
             
-            logger.warning("No barcode found in image")
+            logger.warning("No QR code found in image")
             return None
             
         except Exception as e:
-            logger.error(f"Error in barcode extraction: {str(e)}")
+            logger.error(f"Error in QR code extraction: {str(e)}")
             return None
 
     def extract_visual_features(self, image: np.ndarray) -> Dict:
