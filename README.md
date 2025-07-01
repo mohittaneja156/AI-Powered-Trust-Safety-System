@@ -2,7 +2,6 @@
 
 > A comprehensive AI-based solution to detect fake reviews, counterfeit listings, privacy risks, and malicious activity across e-commerce and fintech platforms. Built to ensure authenticity, improve user trust, and assist admins in moderating threats and managing data privacy effectively.
 
-🛡️ **Developed by Team Brain Byte**
 
 ---
 
@@ -149,14 +148,6 @@ AI-Powered-Trust-Safety-System/
 | Policy Violation Prevention | 50% Drop in flagged mock data      |
 | Scanner Adoption            | 70% among return-related cases     |
 | Trust Badge Engagement      | 85%+ in product views               |
-
----
-
-## 👥 Team Brain Byte
-
-- **Gauri** 
-- **Ashish K Choudhary** 
-- **Mohit Taneja** 
 
 ---
 
