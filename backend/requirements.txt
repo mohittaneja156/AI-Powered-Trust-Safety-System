@@ -15,5 +15,12 @@ scikit-image>=0.18.0
 scikit-learn>=0.24.0 
 tensorflow-cpu  # Use CPU-only TensorFlow for Render
 gensim>=4.0.0
+<<<<<<< HEAD
 gunicorn
 # For Render: All ML libraries are CPU-only to avoid GPU errors and reduce memory usage 
+=======
+uvicorn[standard]
+gunicorn
+python-dotenv
+# For Render: All ML libraries are CPU-only to avoid GPU errors and reduce memory usage
+>>>>>>> b293479d8985a73800fb47ea780c30e9e19eea5b
