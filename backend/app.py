@@ -1376,7 +1376,9 @@ async def test_endpoint():
         "timestamp": datetime.now().isoformat()
     }
 
+# Only needed if you're running it via uvicorn in development
 if __name__ == "__main__":
+    import os
     import uvicorn
-    port = int(os.environ.get("PORT", 8000))
-    uvicorn.run("app:app", host="0.0.0.0", port=port, reload=True)
+    PORT = int(os.environ.get("PORT", 10000))
+    uvicorn.run("app:app", host="0.0.0.0", port=PORT, reload=True)
