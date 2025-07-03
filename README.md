@@ -115,7 +115,9 @@ pip install -r requirements.txt
 
 4. Run server:
 ```bash
-uvicorn app:app --host 0.0.0.0 --port 5001
+
+uvicorn app:app --host 127.0.0.1 --port 8000 --reload
+
 ```
 
 Runs at [http://localhost:5001](http://localhost:5001)
