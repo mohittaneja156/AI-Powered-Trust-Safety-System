@@ -20,5 +20,4 @@ gunicorn
 uvicorn[standard]
 gunicorn
 python-dotenv
-# For Render: All ML libraries are CPU-only to avoid GPU errors and reduce memory usage
->>>>>>> b293479d8985a73800fb47ea780c30e9e19eea5b
+
