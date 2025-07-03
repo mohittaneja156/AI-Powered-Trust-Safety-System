@@ -5,7 +5,7 @@ pillow>=8.3.0
 numpy>=1.21.0
 opencv-python>=4.5.0
 pytesseract>=0.3.8
-torch>=1.9.0
+torch>=1.9.0  # CPU-only by default unless CUDA is specified
 torchvision>=0.10.0
 transformers>=4.5.0
 python-jose==3.3.0
@@ -13,4 +13,5 @@ python-dotenv==1.0.0
 requests>=2.26.0
 scikit-image>=0.18.0
 scikit-learn>=0.24.0 
-tensorflow
+tensorflow-cpu  # Use CPU-only TensorFlow for Render
+# For Render: All ML libraries are CPU-only to avoid GPU errors and reduce memory usage

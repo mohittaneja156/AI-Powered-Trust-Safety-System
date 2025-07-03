@@ -1,3 +1,8 @@
+# For Render: Force CPU-only mode and suppress TensorFlow logs to avoid GPU errors and reduce memory usage
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -12,8 +17,6 @@ import json
 from datetime import datetime
 from product_verification import ProductVerifier
 import os
-import tensorflow as tf
-from tensorflow.keras.models import load_model, Model
 from gensim.models import Word2Vec
 import pickle
 from scipy.spatial.distance import cosine
@@ -23,8 +26,6 @@ from fastapi import APIRouter
 from pydantic import BaseModel as PydanticBaseModel
 import uuid
 import requests
-from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification
-import torch
 from dotenv import load_dotenv
 
 # Configure logging with more detail
@@ -305,6 +306,12 @@ async def load_ml_assets_unified():
     global IMAGE_SIZE_W, IMAGE_SIZE_H, MAX_SEQUENCE_LEN, EMBEDDING_DIM
     global REAL_LABEL_ENCODED, FAKE_LABEL_ENCODED, BRAND_REFERENCE_FEATURES
     global text_analyzer, text_tokenizer, text_model
+    import tensorflow as tf
+    from tensorflow.keras.models import load_model, Model
+    from gensim.models import Word2Vec
+    import pickle
+    import torch
+    from transformers import pipeline
     
     logger.info("Loading ML models and assets (unified)...")
     try:
@@ -381,6 +388,9 @@ async def predict_authenticity(
 ):
     if ml_model is None or word2vec_model_wv is None or label_encoder is None:
         raise HTTPException(status_code=503, detail="ML model and assets not loaded. Server is not ready.")
+    # Import cv2 and numpy only when needed
+    import cv2
+    import numpy as np
     logger.info(f"Received authenticity check request: Image='{image.filename}', Brand='{brand_name}', Tagline='{tagline}'")
     try:
         image_bytes = await image.read()
@@ -1365,8 +1375,3 @@ async def test_endpoint():
         "message": "Unified FastAPI server is running with ML monitoring",
         "timestamp": datetime.now().isoformat()
     }
-
-if __name__ == "__main__":
-    import uvicorn
-    port = int(os.environ.get("PORT", 10000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
